@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/actionNavigatoinMainPage"
+        android:title="@string/main_title"
+        android:orderInCategory="1"
+        android:icon="@drawable/book"
+        />
+    <item
+        android:id="@+id/actionNavigatoinBook"
+        android:title="@string/book_title"
+        android:orderInCategory="1"
+        android:icon="@drawable/book"
+        />
+    <item
+        android:id="@+id/actionNavigatoinClock"
+        android:title="@string/clock_title"
+        android:orderInCategory="1"
+        android:icon="@drawable/clock"
+        />
+</menu>
