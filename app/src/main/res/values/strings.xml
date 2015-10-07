@@ -11,4 +11,10 @@
 
     <string name="title_activity_clock">ClockActivity</string>
     <string name="dummy_button">Dummy Button</string>
+    <string name="title_activity_news">NewsActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="clock">Clock</string>
+    <string name="clock_name">Cloooock</string>
+    <string name="statist">statistics</string>
 </resources>

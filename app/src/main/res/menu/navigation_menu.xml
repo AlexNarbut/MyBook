@@ -15,8 +15,8 @@
         />
     <item
         android:id="@+id/actionNavigatoinClock"
-        android:title="@string/clock_title"
+        android:title="@string/statist"
         android:orderInCategory="1"
-        android:icon="@drawable/clock"
+        android:icon="@drawable/statist"
         />
 </menu>

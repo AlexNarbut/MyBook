@@ -12,7 +12,7 @@ public class TabsPageFragmentAdapter extends FragmentPagerAdapter {
 
     public TabsPageFragmentAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
-        tabs = new String[]{"Calendar", "Notes","Progress"};
+        tabs = new String[]{"Calendar", "Train","WoD"};
     }
 
     @Override
