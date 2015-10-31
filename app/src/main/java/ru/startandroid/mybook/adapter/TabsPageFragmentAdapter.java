@@ -1,10 +1,11 @@
 package ru.startandroid.mybook.adapter;
 
-import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import ru.startandroid.mybook.fragment.ExFragment;
+import ru.startandroid.mybook.fragment.CalendarFragment;
+import ru.startandroid.mybook.fragment.StatictikFragment;
+import ru.startandroid.mybook.fragment.TrainFragment;
 
 
 public class TabsPageFragmentAdapter extends FragmentPagerAdapter {
@@ -12,7 +13,7 @@ public class TabsPageFragmentAdapter extends FragmentPagerAdapter {
 
     public TabsPageFragmentAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
-        tabs = new String[]{"Calendar", "Train","WoD"};
+        tabs = new String[]{"Тренировка","Календарь", "Статистика"};
     }
 
     @Override
@@ -25,11 +26,11 @@ public class TabsPageFragmentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return ExFragment.getInstance();
+                return TrainFragment.getInstance();
             case 1:
-                return ExFragment.getInstance();
+                return CalendarFragment.getInstance();
             case 2:
-                return ExFragment.getInstance();
+                return StatictikFragment.getInstance();
         }
         return null;
     }

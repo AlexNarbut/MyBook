@@ -13,4 +13,9 @@
         <item name="android:background">@drawable/menu_helper</item>
         <item name="android:textColor">#fafafa</item>
     </style>
+    <style name="spinner_style" parent="AppTheme">
+        <item name="android:popupBackground">#000</item>
+        <item name="android:textColor">@color/accent</item>
+    </style>
+
 </resources>

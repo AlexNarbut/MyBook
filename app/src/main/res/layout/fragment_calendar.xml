@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffff">
+
+    <CalendarView
+    android:id="@+id/calendar"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:focusableInTouchMode="false"
+        android:longClickable="false"
+        android:nestedScrollingEnabled="true" />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:background="#000000">
+        <TableRow android:background="@color/primary_text" android:layout_margin="1dip"
+            android:padding="5dp">
+            <TextView  android:text="Category filters"
+                android:layout_gravity="center_horizontal"
+                android:layout_span="2"
+                android:textSize="25sp" android:textColor="#ffff"/>
+        </TableRow>
+            <TableRow android:background="@color/primary_text" android:layout_margin="1dip"
+                android:padding="10dp">
+                <TextView
+                    android:text="Type of train:"
+                    android:textSize="15sp"
+                    android:textColor="#ffff"/>
+                <Spinner android:id="@+id/train_spinner"  android:entries="@array/train_type"
+                    android:spinnerMode="dialog" android:theme="@style/spinner_style"></Spinner>
+            </TableRow>
+            <TableRow
+                android:background="@color/primary_text" android:layout_margin="1dip"
+                android:padding="10dp">
+            <TextView
+                android:textSize="15sp"
+                android:textColor="#ffff"
+                android:text="Rating of train:"/>
+            <Spinner android:id="@+id/ratingn_spinner"  android:entries="@array/rating_type"
+                android:spinnerMode="dialog" android:theme="@style/spinner_style"></Spinner>
+            </TableRow>
+    </TableLayout>
+</LinearLayout>

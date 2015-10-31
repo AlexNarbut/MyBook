@@ -1,5 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ru.startandroid.mybook.NewsActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.startandroid.mybook.TrainActivity">
+
 </menu>

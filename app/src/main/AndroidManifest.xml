@@ -24,6 +24,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.startandroid.mybook.MainActivity" />
         </activity>
+        <activity
+            android:name=".TrainActivity"
+            android:label="@string/title_activity_train"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.startandroid.mybook.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

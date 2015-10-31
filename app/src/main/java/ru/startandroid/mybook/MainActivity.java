@@ -1,26 +1,25 @@
 package ru.startandroid.mybook;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-
 import ru.startandroid.mybook.adapter.TabsPageFragmentAdapter;
+import ru.startandroid.mybook.db.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.activity_main;
-
     private DrawerLayout drawLayout;
     private Toolbar  toolbar;
     private ViewPager viewPager;
@@ -41,11 +40,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                switch ( menuItem.getItemId())
-                {
-                    case R.id.news:
-                    {
-                        Intent intent = new Intent(MainActivity.this,NewsActivity.class);
+                switch (menuItem.getItemId()) {
+                    case R.id.news_item: {
+                        Intent intent = new Intent(MainActivity.this, NewsActivity.class);
                         startActivity(intent);
                     }
                 }
@@ -55,12 +52,16 @@ public class MainActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.menu);
     }
 
+    public void onClick(View v){
+        switch (v.getId()) {
 
+        }
+    }
     public void clickFunc(View view){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,NewsActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,8 +79,18 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 drawLayout.closeDrawers();
                 switch (menuItem.getItemId()) {
+                    case R.id.actionNavigatoinMainPage:
+                        showTrainTab();
+                        break;
                     case R.id.actionNavigatoinBook:
                         showNotificationTab();
+                        break;
+                    case R.id.actionNavigatoinStat:
+                        showStatistTab();
+                        break;
+                    case R.id.actionNavigatoinExit:
+                        finish();
+                        break;
                 }
                 return true;
             }
@@ -95,23 +106,32 @@ public class MainActivity extends AppCompatActivity {
         tablayout.setupWithViewPager(viewPager);
     }
 
+    private void showTrainTab(){
+        viewPager.setCurrentItem(Constans.TAB_ONE);
+    }
     private void showNotificationTab(){
         viewPager.setCurrentItem(Constans.TAB_TWO);
     }
-
-    private void initActionMenu()
-    {
-        //SetActionButtonClick(R.id.action_a,new Intent(MainActivity.this,ClockActivity.class));
+    private void showStatistTab(){viewPager.setCurrentItem(Constans.TAB_THREE);
     }
-    private void SetActionButtonClick(int actionButtonId,final Intent intent)
+
+    private void AlertClick()
     {
-        final FloatingActionButton actionButton = (FloatingActionButton)findViewById(actionButtonId);
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Составленная тренировка!")
+                .setMessage("Что-то там, что-то там")
+                .setNegativeButton("Закрыть",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }})
+                .setCancelable(true).setPositiveButton("Создать", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                        /* код добавления тренировки*/
+                dialog.cancel();
             }
         });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
-
 }

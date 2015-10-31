@@ -8,6 +8,7 @@
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:colorControlNormal">@color/color_white</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:textColor">#000000</item>
     </style>
     <style name="menu_labels_style"  parent="AppTheme">
         <item name="android:background">@drawable/menu_helper</item>

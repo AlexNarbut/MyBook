@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">CrossBook</string>
     <string name="action_settings">Settings</string>
-    <string name="news_title">News</string>
+    <string name="news_title">Новости</string>
     <string name="tbar_title">CrossBook</string>
-    <string name="clock_title">Clock</string>
-    <string name="book_title">Diary</string>
-    <string name="main_title">Main Page</string>
+    <string name="clock_title">Часы</string>
+    <string name="book_title">Дневник</string>
+    <string name="main_title">Основная страница</string>
     <string name="view_navigation_open">Open</string>
     <string name="view_navigation_close">Close</string>
 
@@ -14,7 +14,45 @@
     <string name="title_activity_news">NewsActivity</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="clock">Clock</string>
+    <string name="clock">Часы</string>
     <string name="clock_name">Cloooock</string>
-    <string name="statist">statistics</string>
+    <string name="statist">Статистика</string>
+    <string name="exit">Выход</string>
+    <string name="title_train_view">Создать тренеровку</string>
+    <string name="title_activity_create_train">CreateTrainActivity</string>
+    <string-array name="train_type">
+        <item>Любая</item>
+        <item>Тяжелая атлетика</item>
+        <item>Гимнастика</item>
+        <item>Кардио</item>
+        <item>Тяжелая атлетика + Гимнастика</item>
+        <item>Тяжелая атлетика + Кардио</item>
+        <item>Гимнастика + Кардио</item>
+        <item>Тяжелая атлетика + Гимнастика + Кардио</item>
+    </string-array>
+    <string-array name="main_train_ex">
+        <item>Любая</item>
+        <item>GHD</item>
+        <item>Бурпи</item>
+        <item>Толчок</item>
+        <item>Взятие на грудь</item>
+        <item>Быбросы</item>
+        <item>Рывок</item>
+        <item>Гребля</item>
+        <item>Жим(стоя,лёжа..)</item>
+        <item>Изометрика</item>
+        <item>Кардио(плавание,бег,вело)</item>
+        <item>Махи</item>
+        <item>Отжимания</item>
+        <item>Подтягивания</item>
+        <item>Тяга</item>
+        <item>Швунг</item>
+    </string-array>
+    <string-array name="rating_type">
+        <item>Любая</item>
+        <item>Отличная</item>
+        <item>Хорошая</item>
+        <item>Плохая</item>
+    </string-array>
+    <string name="title_activity_train">TrainActivity</string>
 </resources>

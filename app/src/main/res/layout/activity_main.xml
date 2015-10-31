@@ -41,8 +41,8 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/primary"
             app:layout_behavior = "@string/appbar_scrolling_view_behavior">
-
         </android.support.v4.view.ViewPager>
 
 
@@ -62,10 +62,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
                     app:fab_icon ="@drawable/clock"
-                    app:fab_title = "Tabasco"
+                    app:fab_title = "Timer"
                     app:fab_colorNormal= "#b1b1b1"
                     app:fab_size="normal"
-
                     />
                 <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/action_b"
@@ -75,7 +74,7 @@
                     app:fab_icon="@drawable/dia"
                     app:title="Action 1"
                     app:fab_colorNormal= "#b1b1b1"
-                    app:fab_title = "Diamond"
+                    app:fab_title = "Tabata"
                     app:fab_size="normal"/>
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

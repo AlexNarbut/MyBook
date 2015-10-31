@@ -10,13 +10,20 @@
     <item
         android:id="@+id/actionNavigatoinBook"
         android:title="@string/book_title"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:icon="@drawable/book"
         />
     <item
-        android:id="@+id/actionNavigatoinClock"
+        android:id="@+id/actionNavigatoinStat"
         android:title="@string/statist"
-        android:orderInCategory="1"
+        android:orderInCategory="3"
         android:icon="@drawable/statist"
         />
+    <item
+        android:id="@+id/actionNavigatoinExit"
+        android:title="@string/exit"
+        android:orderInCategory="4"
+        android:icon="@drawable/exit"
+        />
+
 </menu>
