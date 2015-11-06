@@ -55,4 +55,5 @@
         <item>Плохая</item>
     </string-array>
     <string name="title_activity_train">TrainActivity</string>
+    <string name="train_activity_title">Окно тренировки</string>
 </resources>

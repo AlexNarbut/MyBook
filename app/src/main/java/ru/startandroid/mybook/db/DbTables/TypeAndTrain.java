@@ -20,8 +20,8 @@ public class TypeAndTrain {
             + ID + " integer primary key autoincrement, "
             + ID_TP + " integer , "
             + ID_TR + " integer , "
-            + " FOREIGN KEY( " + ID_TP + " ) REFERENCES "+ Type.TABLE_NAME+" ( "+ Type.ID +" ), "
-            + " FOREIGN KEY( " + ID_TR + " ) REFERENCES "+ Training.TABLE_NAME+" ( "+ Training.ID +" ));";
+            + " FOREIGN KEY( " + ID_TP + " ) REFERENCES "+ Type.TABLE_NAME+"( "+ Type.ID +" ) "
+            + " FOREIGN KEY( " + ID_TR + " ) REFERENCES "+ Training.TABLE_NAME+"( "+ Training.ID +" ));";
 
     public TypeAndTrain() {
     }

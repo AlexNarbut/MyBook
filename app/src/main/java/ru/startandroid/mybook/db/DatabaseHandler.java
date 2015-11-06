@@ -5,14 +5,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.ListView;
 
+import java.sql.Struct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import ru.startandroid.mybook.db.DbTables.DiaryItem;
+import ru.startandroid.mybook.db.DbTables.Item;
 import ru.startandroid.mybook.db.DbTables.Training;
 import ru.startandroid.mybook.db.DbTables.IDatabaseHandler;
 import ru.startandroid.mybook.db.DbTables.Type;
@@ -20,13 +24,16 @@ import ru.startandroid.mybook.db.DbTables.TypeAndTrain;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandler {
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "CrossDiery.db";
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm ");
     private Training dtrain;
     private Type type;
     private TypeAndTrain type_and_train;
     private DiaryItem diaryItem;
+
+
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
@@ -38,6 +45,11 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         type = new Type();
         type_and_train = new TypeAndTrain();
         diaryItem = new DiaryItem();
+        createTables(db);
+    }
+
+    @Override
+    public void createTables(SQLiteDatabase db) {
         db.execSQL(dtrain.CREATE_TABLE);
         db.execSQL(type.CREATE_TABLE);
         db.execSQL(type_and_train.CREATE_TABLE);
@@ -57,10 +69,10 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     @Override
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(dtrain.TABLE_NAME, null, null);
-        db.delete(type.TABLE_NAME, null, null);
-        db.delete(type_and_train.TABLE_NAME, null, null);
-        db.delete(diaryItem.TABLE_NAME, null, null);
+        db.execSQL("DROP TABLE IF EXISTS " + dtrain.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + type.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + type_and_train.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + diaryItem.TABLE_NAME);
         db.close();
     }
 
@@ -162,6 +174,48 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         DiaryItem item = new DiaryItem(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),convertToDate(cursor.getString(2)),Byte.parseByte(cursor.getString(3)));
         return item;
     }
+
+
+    @Override
+    public Item SearchClientTraining() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "select " + TypeAndTrain.TABLE_NAME +"."+TypeAndTrain.ID + ","+ Training.TABLE_NAME +"."+Training.ID + ","+ Training.TABLE_NAME +"."+Training.NAME + "," + Training.TABLE_NAME + "." + Training.DESCRIP
+                +" from " + TypeAndTrain.TABLE_NAME
+                +" inner join " + Type.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TP + " = " + Type.TABLE_NAME + "."+ Type.ID
+                +" inner join " + Training.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TR + " = " + Training.TABLE_NAME + "." + Training.ID;
+        Cursor cursor = db.rawQuery(query, null);
+        logCursor(cursor);
+        Random rand = new Random();
+        List<Item> list = new ArrayList<Item>() ;
+        if (cursor.moveToFirst()) {
+            do {
+                Item item = new Item(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),cursor.getString(2),cursor.getString(3));
+                list.add(item);
+            } while (cursor.moveToNext());
+        }
+        int size = list.size();
+        Item it = list.get(rand.nextInt(size));
+        cursor.close();
+        return it;
+    }
+
+    void logCursor(Cursor c) {
+        if (c != null) {
+            if (c.moveToFirst()) {
+                String str;
+                do {
+                    str = "";
+                    for (String cn : c.getColumnNames()) {
+                        str = str.concat(cn + ":" + c.getString(c.getColumnIndex(cn)) + "; ");
+                    }
+                    Log.d("myLog", str);
+                } while (c.moveToNext());
+            }
+        } else
+            Log.d("myLog", "Cursor is null");
+    }
+
+
 
     @Override
     public List<Training> getAllTraining() {
@@ -378,5 +432,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     public String convToString(Date date) {
         return date.getDay() +"."+ date.getMonth() + "."+ date.getYear()+" "+date.getHours() + ":" + date.getMinutes();
     }
+
+
 }
 

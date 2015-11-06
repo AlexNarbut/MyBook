@@ -1,11 +1,15 @@
 package ru.startandroid.mybook.db.DbTables;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.List;
 
 /**
  * Created by Алексей on 22.10.2015.
  */
 public interface IDatabaseHandler {
+
+        public void createTables(SQLiteDatabase db);
         public void addTraining(Training training);
         public void addType(Type type);
         public void addTypeandTran(TypeAndTrain typeAndTrain);
@@ -36,5 +40,6 @@ public interface IDatabaseHandler {
         public void deleteTypeAndTrain(TypeAndTrain type);
         public void deleteDiaryItem(DiaryItem item);
 
+        public Item SearchClientTraining();
         public void deleteAll();
 }

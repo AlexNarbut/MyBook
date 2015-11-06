@@ -73,30 +73,12 @@
             android:theme="@style/spinner_style" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Дата тренировки: "
-            android:textColor="@color/primary_text"/>
-        <DatePicker
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></DatePicker>
-
-    </LinearLayout>
-
-
-
     <Button
-
-        android:layout_width="wrap_content"
+        android:text="Найти"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/create_train"
-        android:layout_gravity="left"
+        android:layout_gravity="center"
         android:padding="20dp"/>
 
 
