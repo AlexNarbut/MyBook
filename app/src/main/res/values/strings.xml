@@ -30,6 +30,13 @@
         <item>Гимнастика + Кардио</item>
         <item>Тяжелая атлетика + Гимнастика + Кардио</item>
     </string-array>
+    <string-array name="type_round">
+        <item>Любая</item>
+        <item>На время</item>
+        <item>Раунды</item>
+    </string-array>
+
+
     <string-array name="main_train_ex">
         <item>Любая</item>
         <item>GHD</item>
@@ -39,9 +46,9 @@
         <item>Быбросы</item>
         <item>Рывок</item>
         <item>Гребля</item>
-        <item>Жим(стоя,лёжа..)</item>
+        <item>Жим</item>
         <item>Изометрика</item>
-        <item>Кардио(плавание,бег,вело)</item>
+        <item>Кардио</item>
         <item>Махи</item>
         <item>Отжимания</item>
         <item>Подтягивания</item>
@@ -56,4 +63,12 @@
     </string-array>
     <string name="title_activity_train">TrainActivity</string>
     <string name="train_activity_title">Окно тренировки</string>
+
+    <string name="title_activity_loading">LoadingActivity</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="timers">Таймеры</string>
+    <string name="title_activity_timer_selecter">Список Таймеров</string>
+    <string name="title_activity_usual_timer">Таймер с Раудами</string>
+    <string name="title_activity_count_down_timer">CountDownTimer</string>
+    <string name="title_activity_down_load_page">DownLoadPage</string>
 </resources>

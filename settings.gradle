@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':org.apache.servicemix.bundles.httpcore-4.0-alpha6_1'

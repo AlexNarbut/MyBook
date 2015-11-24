@@ -13,7 +13,7 @@ public class TabsPageFragmentAdapter extends FragmentPagerAdapter {
 
     public TabsPageFragmentAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
-        tabs = new String[]{"Тренировка","Календарь", "Статистика"};
+        tabs = new String[]{"Тренировка","Календарь", "Статистика","Изометрика","Рекорды" };
     }
 
     @Override
@@ -30,6 +30,10 @@ public class TabsPageFragmentAdapter extends FragmentPagerAdapter {
             case 1:
                 return CalendarFragment.getInstance();
             case 2:
+                return StatictikFragment.getInstance();
+            case 3:
+                return StatictikFragment.getInstance();
+            case 4:
                 return StatictikFragment.getInstance();
         }
         return null;

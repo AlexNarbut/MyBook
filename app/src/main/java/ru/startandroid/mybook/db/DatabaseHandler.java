@@ -24,7 +24,7 @@ import ru.startandroid.mybook.db.DbTables.TypeAndTrain;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandler {
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 20;
     private static final String DATABASE_NAME = "CrossDiery.db";
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm ");
     private Training dtrain;
@@ -59,20 +59,22 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w("SQLite", "Обновляемся с версии " + oldVersion + " на версию " + newVersion);
+        db.execSQL("DROP TABLE IF EXISTS " + diaryItem.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + type_and_train.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + dtrain.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + type.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + type_and_train.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + diaryItem.TABLE_NAME);
         onCreate(db);
     }
 
     @Override
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + diaryItem.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + type_and_train.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + dtrain.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + type.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + type_and_train.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + diaryItem.TABLE_NAME);
+        createTables(db);
+
         db.close();
     }
 
@@ -80,9 +82,9 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     public void addTraining(Training training) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(dtrain.ID,training.get_id());
         values.put(dtrain.NAME, training.get_name());
-        values.put(dtrain.MAIN_EX_1, training.get_main_ex_1());
-        values.put(dtrain.MAIN_EX_2, training.get_main_ex_2());
+        values.put(dtrain.ROUNDS, training.get_rnd());
         values.put(dtrain.DESCRIP, training.get_tr_descr());
         db.insert(dtrain.TABLE_NAME, null, values);
         db.close();
@@ -92,6 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     public void addType(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values= new ContentValues();
+        values.put(type.ID,type.get_id_tp());
         values.put(type.NAME, type.get_name_tp());
         db.insert(type.TABLE_NAME, null, values);
         db.close();
@@ -101,6 +104,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     public void addTypeandTran(TypeAndTrain typeAndTrain1) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values= new ContentValues();
+        values.put(type_and_train.ID, typeAndTrain1.get_id_tp_tr());
         values.put(type_and_train.ID_TP, typeAndTrain1.get_id_tp());
         values.put(type_and_train.ID_TR, typeAndTrain1.get_id_tr());
         db.insert(type_and_train.TABLE_NAME, null, values);
@@ -123,14 +127,14 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(dtrain.TABLE_NAME,
-                new String[]{dtrain.ID, dtrain.NAME, dtrain.MAIN_EX_1, dtrain.MAIN_EX_2, dtrain.DESCRIP}, dtrain.ID + "=?",
+                new String[]{dtrain.ID, dtrain.NAME,dtrain.ROUNDS, dtrain.DESCRIP}, dtrain.ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
         if (cursor != null){
             cursor.moveToFirst();
         }
 
-        Training training = new Training(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4));
+        Training training = new Training(Integer.parseInt(cursor.getString(0)), cursor.getString(1),cursor.getString(2),cursor.getString(3));
 
         return training;
     }
@@ -175,26 +179,74 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         return item;
     }
 
+    @Override
+    public List<Type> getAllType() {
+        List<Type> typeList = new ArrayList<Type>();
+        String selectQuery = "SELECT  * FROM  " + type.TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Type type = new Type();
+                type.set_id_tp(Integer.parseInt(cursor.getString(0)));
+                type.set_name_tp(cursor.getString(1));
+                typeList.add(type);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return typeList;
+    }
 
     @Override
-    public Item SearchClientTraining() {
+    public Item SearchClientTraining(String sort,String  ex) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "select " + TypeAndTrain.TABLE_NAME +"."+TypeAndTrain.ID + ","+ Training.TABLE_NAME +"."+Training.ID + ","+ Training.TABLE_NAME +"."+Training.NAME + "," + Training.TABLE_NAME + "." + Training.DESCRIP
-                +" from " + TypeAndTrain.TABLE_NAME
-                +" inner join " + Type.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TP + " = " + Type.TABLE_NAME + "."+ Type.ID
-                +" inner join " + Training.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TR + " = " + Training.TABLE_NAME + "." + Training.ID;
+        String query= null;
+        if (sort =="")
+        {
+            query = "select " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID + "," + Training.TABLE_NAME + "." + Training.ID + "," + Training.TABLE_NAME + "." + Training.NAME + "," + Training.TABLE_NAME + "." + Training.DESCRIP
+                    + " from " + TypeAndTrain.TABLE_NAME
+                    + " inner join " + Type.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TP + " = " + Type.TABLE_NAME + "." + Type.ID
+                    + " inner join " + Training.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TR + " = " + Training.TABLE_NAME + "." + Training.ID;
+        }
+        else {
+            query = "select " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID + "," + Training.TABLE_NAME + "." + Training.ID + "," + Training.TABLE_NAME + "." + Training.NAME + "," + Training.TABLE_NAME + "." + Training.DESCRIP
+                    + " from " + TypeAndTrain.TABLE_NAME
+                    + " inner join " + Type.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TP + " = " + Type.TABLE_NAME + "." + Type.ID
+                    + " inner join " + Training.TABLE_NAME + " on " + TypeAndTrain.TABLE_NAME + "." + TypeAndTrain.ID_TR + " = " + Training.TABLE_NAME + "." + Training.ID
+                    + " WHERE " + Type.TABLE_NAME + "." + Type.NAME + "='" + sort + "'";
+        }
+
         Cursor cursor = db.rawQuery(query, null);
         logCursor(cursor);
         Random rand = new Random();
         List<Item> list = new ArrayList<Item>() ;
-        if (cursor.moveToFirst()) {
-            do {
-                Item item = new Item(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),cursor.getString(2),cursor.getString(3));
-                list.add(item);
-            } while (cursor.moveToNext());
+        if (ex.compareTo("Любая" )==0) {
+            if (cursor.moveToFirst()) {
+                do {
+                        Item item = new Item(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
+                    list.add(item);
+                } while (cursor.moveToNext());
+            }
+        }
+        else {
+            if (cursor.moveToFirst()) {
+                do {
+                    if (cursor.getString(3).contains(ex)) {
+                        Item item = new Item(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), cursor.getString(2), cursor.getString(3));
+                        list.add(item);
+                    }
+                } while (cursor.moveToNext());
+            }
         }
         int size = list.size();
-        Item it = list.get(rand.nextInt(size));
+        Item it = null;
+        if (size > 0) {
+            it = list.get(rand.nextInt(size));
+            cursor.close();
+            return it;
+        }
         cursor.close();
         return it;
     }
@@ -230,9 +282,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
                 Training training = new Training();
                 training.set_id(Integer.parseInt(cursor.getString(0)));
                 training.set_name(cursor.getString(1));
-                training.set_main_ex_1(cursor.getString(2));
-                training.set_main_ex_2(cursor.getString(3));
-                training.set_tr_descr(cursor.getString(4));
+                training.set_rnd(cursor.getString(2));
+                training.set_tr_descr(cursor.getString(3));
                 trainingList.add(training);
             } while (cursor.moveToNext());
         }
@@ -241,25 +292,20 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         return trainingList;
     }
 
-    @Override
-    public List<Type> getAllType() {
-        List<Type> typeList = new ArrayList<Type>();
-        String selectQuery = "SELECT  * FROM  " + type.TABLE_NAME;
-        SQLiteDatabase db = this.getWritableDatabase();
+    public Integer getMaxTypeAndTrainID()
+    {
+        Integer max = 0;
+        String selectQuery = "SELECT  MAX("+type_and_train.TABLE_NAME+"."+type_and_train.ID  +") FROM  " + type_and_train.TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                Type type = new Type();
-                type.set_id_tp(Integer.parseInt(cursor.getString(0)));
-                type.set_name_tp(cursor.getString(1));
-                typeList.add(type);
-            } while (cursor.moveToNext());
+        cursor.moveToFirst();
+        if (cursor!= null)
+        {
+            return cursor.getInt(0)+1;
         }
-        cursor.close();
-        db.close();
-        return typeList;
+        return max+1;
     }
+
 
     @Override
     public List<TypeAndTrain> getAllTypeAndTrain() {
@@ -305,8 +351,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
 
         ContentValues values = new ContentValues();
         values.put(dtrain.NAME, contact.get_name());
-        values.put(dtrain.MAIN_EX_1, contact.get_main_ex_1());
-        values.put(dtrain.MAIN_EX_2, contact.get_main_ex_2());
+        values.put(dtrain.ROUNDS, contact.get_rnd());
         values.put(dtrain.DESCRIP, contact.get_tr_descr());
 
         return db.update(dtrain.TABLE_NAME, values, dtrain.ID + "=?",

@@ -56,79 +56,42 @@ public class StatictikFragment extends Fragment implements View.OnClickListener{
         delbut.setOnClickListener(this);
         return view;
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId())
         {
             case R.id.lkBut:
             {
-                ShowList();
+                Show();
                 break;
             }
             case R.id.delBut:
             {
-                DelList();
+                db.deleteAll();
                 break;
             }
         }
     }
 
-    private void DelList() {
-        db.deleteAll();
-        trainList.clear();
-        adapter.notifyDataSetChanged();
-    }
+    public void Show()
+    {
+        List<Training> traings = db.getAllTraining();
 
-    void ShowList() {
 
-        trainList.clear();
-        Log.d("myLog", "TABLES --------------------");
-        Log.d("myLog", "Inserting Types");
-        db.addType(new Type("Empty 1 "));
-        db.addType(new Type("Empty as1dasd "));
-        List<Type> types = db.getAllType();
-        for (Type cn : types) {
-            String log = "Id: " + cn.get_id_tp() + " ,Name: " + cn.get_name_tp();
-            Log.d("myLog", log);
-        }
-        Log.d("myLog", "------------------");
-        Log.d("myLog", "Inserting Trainings");
-        db.addTraining(new Training("say-say", "ds111afd", "sa222dasd", "2222"));
-        db.addTraining(new Training("say-say", "ds111afd", "sa222dasd", "asdasd"));
-        db.addTraining(new Training("say-say", "ds111afd", "sa222dasd", "asd2eqwa"));
-        List<Training> trains = db.getAllTraining();
-        for (Training cn : trains) {
-            String log = "Id: " + cn.get_id() + " ,Name: " + cn.get_name() +",Descr: " + cn.get_tr_descr();
-            Log.d("myLog", log);
-        }
-        Log.d("myLog", "------------------");
-        Log.d("myLog", "Inserting Type_Train");
-        db.addTypeandTran(new TypeAndTrain(1, 1));
-        db.addTypeandTran(new TypeAndTrain(2,2));
-        List<TypeAndTrain> tp = db.getAllTypeAndTrain();
-        for (TypeAndTrain cn : tp) {
-            String log = "Id: " + cn.get_id_tp_tr() + " ,id_tp: " + cn.get_id_tp() + ",id_tr: " + cn.get_id_tr();
-            Log.d("myLog", log);
-            trainList.add(log);
+        List<TypeAndTrain> ty = db.getAllTypeAndTrain();
+        for( TypeAndTrain tr : ty )
+        {
+            trainList.add( "id tp_tr: " + tr.get_id_tp_tr() + "id_tp: " + tr.get_id_tp() + " id_tr: " + tr.get_id_tr());
             adapter.notifyDataSetChanged();
         }
 
-       Log.d("myLog", "------------------");
-        Log.d("myLog", "Inserting Diary");
-        db.addDiary(new DiaryItem(1,(byte)1));
-        db.addDiary(new DiaryItem(2, (byte) 2));
-        List<DiaryItem> diary = db.getAllDiary();
-        for (DiaryItem item : diary) {
-            String log = "Id: " + item.get_id_dr() + " ,id_tr_tp: " + item.get_id_tp_tr() + ",date: " + item.getDay()+ " state: " + item.getState();
-            Log.d("myLog", log);
+        List<Type> type = db.getAllType();
+        for( Type tr1 : type )
+        {
+            Log.d("type","id tp=: "+tr1.get_id_tp() + "name: " +tr1.get_name_tp());
+
         }
-        Log.d("myLog", "------------------");
-        Item item =  db.SearchClientTraining();
-        itemText.setText("id:" +item.getId_tp_tr() + "id_tr:" + item.getId_tr() + "descr: " +item.getDescr());
-
     }
-
 
 
 }

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.startandroid.mybook" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,11 +13,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".NewsActivity"
@@ -28,6 +26,51 @@
             android:name=".TrainActivity"
             android:label="@string/title_activity_train"
             android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.startandroid.mybook.MainActivity" />
+        </activity>
+        <activity
+            android:name=".LoadingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".timers.TimerSelecter"
+            android:label="@string/title_activity_timer_selecter"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.startandroid.mybook.MainActivity" />
+        </activity>
+        <activity
+            android:name=".timers.UsualTimer"
+            android:label="@string/title_activity_usual_timer"
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.startandroid.mybook.timers.TimerSelecter" />
+        </activity>
+        <activity
+            android:name=".timers.CountDownTimer"
+            android:label="@string/title_activity_count_down_timer"
+            android:parentActivityName=".timers.TimerSelecter"
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ru.startandroid.mybook.timers.TimerSelecter" />
+        </activity>
+        <activity
+            android:name=".DownloadActivity"
+            android:label="@string/title_activity_down_load_page"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.startandroid.mybook.MainActivity" />

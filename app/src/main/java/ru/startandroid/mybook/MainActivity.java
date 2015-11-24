@@ -14,13 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 import ru.startandroid.mybook.adapter.TabsPageFragmentAdapter;
-import ru.startandroid.mybook.db.DatabaseHandler;
+import ru.startandroid.mybook.timers.TimerSelecter;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.activity_main;
     private DrawerLayout drawLayout;
+    FloatingActionsMenu timersMenu;
     private Toolbar  toolbar;
     private ViewPager viewPager;
 
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         InitNavigationView();
         initTabLayout();
     }
+
+
 
     private void InitToolbar() {
         toolbar= (Toolbar)findViewById(R.id.toolbar);
@@ -52,11 +57,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.menu);
     }
 
-    public void onClick(View v){
-        switch (v.getId()) {
-
-        }
-    }
     public void clickFunc(View view){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.actionNavigatoinMainPage:
                         showTrainTab();
                         break;
+                    case R.id.actionNavigatoinTimer:
+                        showTimerActivity();
+                        break;
+                    case R.id.actionNavigatoinDownL:
+                        showDownloadActivity();
+                        break;
                     case R.id.actionNavigatoinBook:
                         showNotificationTab();
                         break;
@@ -103,12 +109,23 @@ public class MainActivity extends AppCompatActivity {
         TabsPageFragmentAdapter adapter = new TabsPageFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         TabLayout tablayout = (TabLayout)findViewById(R.id.tablayout);
+        tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+       // tablayout.setTabMode(TabLayout.ANIMATION_DURATION);
         tablayout.setupWithViewPager(viewPager);
     }
 
     private void showTrainTab(){
         viewPager.setCurrentItem(Constans.TAB_ONE);
     }
+    private void showTimerActivity(){
+        Intent intent = new Intent(MainActivity.this, TimerSelecter.class);
+        startActivity(intent);
+    }
+    private void showDownloadActivity(){
+        Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
+        startActivity(intent);
+    }
+
     private void showNotificationTab(){
         viewPager.setCurrentItem(Constans.TAB_TWO);
     }

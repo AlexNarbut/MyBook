@@ -5,7 +5,6 @@
         android:id="@+id/actionNavigatoinMainPage"
         android:title="@string/main_title"
         android:orderInCategory="1"
-        android:icon="@drawable/book"
         />
     <item
         android:id="@+id/actionNavigatoinBook"
@@ -14,15 +13,27 @@
         android:icon="@drawable/book"
         />
     <item
+        android:id="@+id/actionNavigatoinTimer"
+        android:title="@string/timers"
+        android:orderInCategory="3"
+        android:icon="@drawable/clock"
+        />
+    <item
+        android:id="@+id/actionNavigatoinDownL"
+        android:title="Загрузка тренеровак"
+        android:orderInCategory="4"
+        android:icon="@drawable/download"
+        />
+    <item
         android:id="@+id/actionNavigatoinStat"
         android:title="@string/statist"
-        android:orderInCategory="3"
+        android:orderInCategory="5"
         android:icon="@drawable/statist"
         />
     <item
         android:id="@+id/actionNavigatoinExit"
         android:title="@string/exit"
-        android:orderInCategory="4"
+        android:orderInCategory="6"
         android:icon="@drawable/exit"
         />
 

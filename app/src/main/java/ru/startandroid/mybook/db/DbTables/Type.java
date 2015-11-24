@@ -14,8 +14,8 @@ public class Type {
 
     public static final String  CREATE_TABLE ="create table "
             + TABLE_NAME + " ("
-            + ID + " integer primary key autoincrement, "
-            + NAME + " text not null);";
+            + ID + " integer primary key , "
+            + NAME + " text unique not null);";
 
     public Type(String _name_tp) {
         this._name_tp = _name_tp;

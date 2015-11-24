@@ -23,6 +23,7 @@ public class TrainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
+        InitToolbar();
         nameTrain =  getIntent().getExtras().getString("trainName");
         id_tr =  getIntent().getExtras().getInt("id_tr");
         id_tp_tr =  getIntent().getExtras().getInt("id_tp_tr");
@@ -38,6 +39,12 @@ public class TrainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_train, menu);
         return true;
+    }
+
+    private void InitToolbar() {
+        toolbar= (Toolbar)findViewById(R.id.news_toolbar);
+        toolbar.setTitle("Окно тренировки");
+        toolbar.inflateMenu(R.menu.menu_news);
     }
 
 }

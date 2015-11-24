@@ -17,7 +17,7 @@ public class TypeAndTrain {
 
     public static final String  CREATE_TABLE ="create table "
             + TABLE_NAME + " ("
-            + ID + " integer primary key autoincrement, "
+            + ID + " integer primary key , "
             + ID_TP + " integer , "
             + ID_TR + " integer , "
             + " FOREIGN KEY( " + ID_TP + " ) REFERENCES "+ Type.TABLE_NAME+"( "+ Type.ID +" ) "

@@ -17,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -25,5 +26,8 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.getbase:floatingactionbutton:1.10.0'
     compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
 }
+
 

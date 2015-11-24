@@ -1,8 +1,4 @@
 package ru.startandroid.mybook.db.DbTables;
-
-/**
- * Created by Алексей on 01.11.2015.
- */
 public class Item {
     Integer id_tp_tr;
     Integer id_tr;

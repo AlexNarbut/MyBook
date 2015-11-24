@@ -40,6 +40,6 @@ public interface IDatabaseHandler {
         public void deleteTypeAndTrain(TypeAndTrain type);
         public void deleteDiaryItem(DiaryItem item);
 
-        public Item SearchClientTraining();
+        public Item SearchClientTraining(String str,String ex);
         public void deleteAll();
 }

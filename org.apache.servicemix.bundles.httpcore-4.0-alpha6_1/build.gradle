@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('org.apache.servicemix.bundles.httpcore-4.0-alpha6_1.jar'))
