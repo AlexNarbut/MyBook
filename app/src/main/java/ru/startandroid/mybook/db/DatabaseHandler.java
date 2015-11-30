@@ -5,26 +5,24 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.ListView;
 
-import java.sql.Struct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
 import ru.startandroid.mybook.db.DbTables.DiaryItem;
 import ru.startandroid.mybook.db.DbTables.Item;
 import ru.startandroid.mybook.db.DbTables.Training;
-import ru.startandroid.mybook.db.DbTables.IDatabaseHandler;
 import ru.startandroid.mybook.db.DbTables.Type;
 import ru.startandroid.mybook.db.DbTables.TypeAndTrain;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandler {
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 21;
     private static final String DATABASE_NAME = "CrossDiery.db";
     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm ");
     private Training dtrain;
@@ -115,8 +113,9 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     public void addDiary(DiaryItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        String str =convToString(item.getDay());
         values.put(diaryItem.ID_TP_TR, item.get_id_tp_tr());
-        values.put(diaryItem.DAY, convToString(item.getDay()) );
+        values.put(diaryItem.DAY, str );
         values.put(diaryItem.STATE, item.getState());
         db.insert(diaryItem.TABLE_NAME, null, values);
         db.close();
@@ -175,7 +174,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         if (cursor != null){
             cursor.moveToFirst();
         }
-        DiaryItem item = new DiaryItem(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),convertToDate(cursor.getString(2)),Byte.parseByte(cursor.getString(3)));
+        DiaryItem item = new DiaryItem(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),convertToDate(cursor.getString(2)),Integer.parseInt(cursor.getString(3)));
         return item;
     }
 
@@ -334,12 +333,36 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
 
         if (cursor.moveToFirst()) {
             do {
+                String  str = cursor.getString(2);
                 DiaryItem item = new DiaryItem();
                 item.set_id_dr(Integer.parseInt(cursor.getString(0)));
                 item.set_id_tp_tr(Integer.parseInt(cursor.getString(1)));
-                item.setDay(convertToDate(cursor.getString(2)));
-                item.setState(Byte.parseByte(cursor.getString(3)));
+                item.setDay(convertToDate(str));
+                item.setState(Integer.parseInt(cursor.getString(3)));
                 diaryItemList.add(item);
+            } while (cursor.moveToNext());
+        }
+        return diaryItemList;
+    }
+
+    @Override
+    public List<DiaryItem> SearchDieryList(GregorianCalendar date) {
+        List<DiaryItem> diaryItemList = new ArrayList<DiaryItem>();
+        String selectQuery = "SELECT  * FROM  " + diaryItem.TABLE_NAME ;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Date checkdate = convertToDate(cursor.getString(2));
+                if(checkdate.getDay() == date.DAY_OF_MONTH &&checkdate.getMonth() == date.MONTH && checkdate.getYear() == date.YEAR ) {
+                    DiaryItem item = new DiaryItem();
+                    item.set_id_dr(Integer.parseInt(cursor.getString(0)));
+                    item.set_id_tp_tr(Integer.parseInt(cursor.getString(1)));
+                    item.setDay(convertToDate(cursor.getString(2)));
+                    item.setState(Integer.parseInt(cursor.getString(3)));
+                    diaryItemList.add(item);
+                }
             } while (cursor.moveToNext());
         }
         return diaryItemList;
@@ -408,14 +431,15 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     @Override
     public void deleteDiaryItem(DiaryItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(diaryItem.TABLE_NAME, diaryItem.ID + " =?", new String[] { String.valueOf(diaryItem.get_id_dr())});
+        db.delete(diaryItem.TABLE_NAME, diaryItem.ID + " LIKE ? ", new String[] {String.valueOf(item.get_id_dr())});
         db.close();
     }
 
     @Override
     public void deleteTypeAndTrain(TypeAndTrain type) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(type_and_train.TABLE_NAME, type_and_train.ID + " =?", new String[] { String.valueOf(type_and_train.get_id_tp_tr())});
+
+        db.delete(type_and_train.TABLE_NAME, type_and_train.ID + " LIKE ?", new String[] { Integer.toString(type.get_id_tp_tr())});
         db.close();
     }
 
@@ -465,17 +489,21 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
 
     Date convertToDate(String str)
     {
-        Date date  = new Date();
         try {
-            date = format.parse(str);
+            return  format.parse(str);
         } catch (ParseException ex) {
             System.out.println("Not correct date");
+            return new Date();
         }
-        return date;
     }
 
     public String convToString(Date date) {
-        return date.getDay() +"."+ date.getMonth() + "."+ date.getYear()+" "+date.getHours() + ":" + date.getMinutes();
+        try {
+         return format.format(date);
+        } catch (Exception ex) {
+            System.out.println("Not correct date");
+            return null;
+        }
     }
 
 

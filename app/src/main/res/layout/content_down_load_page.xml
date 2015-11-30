@@ -65,31 +65,11 @@
             />
     </LinearLayout>
 
-    <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="20dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Наличие упражнения\n в WOD №1:"
-        android:textColor="@color/primary_text"/>
-    <Spinner
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/main_ex_train_spinner"
-        android:entries="@array/main_train_ex"
-        android:spinnerMode="dialog"
-        android:gravity="left"
-        android:theme="@style/spinner_style"
-        />
-</LinearLayout>
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:textSize="25dp"
         android:text="Загрузить"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:id="@+id/download_button"/>
 </LinearLayout>

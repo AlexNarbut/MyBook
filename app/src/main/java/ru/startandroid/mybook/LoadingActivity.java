@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
+
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import ru.startandroid.mybook.db.DatabaseHandler;
@@ -21,14 +23,20 @@ public class LoadingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
         state = (TextView)findViewById(R.id.loading_state);
+        HashMap<String,String> param = new HashMap<String,String>();
+        param.put("maxId", db.getMaxTypeAndTrainID().toString());
+        param.put("user", "u0123039_admin");
+        param.put("pass", "axel1994");
+        param.put("db", "u0123039_trains");
         LoadingAsyncTask splashScreenAsyncTask = new LoadingAsyncTask(this);
+        splashScreenAsyncTask.param = param;
         splashScreenAsyncTask.execute();
     }
 
 
 
     private class LoadingAsyncTask extends AsyncTask <Void, Void, Void>{
-
+        public HashMap<String,String> param;
         LoadingActivity activity;
         ApiConnector connector = new ApiConnector(db);
         public LoadingAsyncTask(LoadingActivity activity) {
@@ -38,7 +46,7 @@ public class LoadingActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             boolean checkTrain = false;
-            connector.getAllTraining(checkTrain);
+            connector.getAllTraining(checkTrain,"getNewJsonTraining.php",param);
             return null;
         }
         @Override

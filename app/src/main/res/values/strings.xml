@@ -69,6 +69,9 @@
     <string name="timers">Таймеры</string>
     <string name="title_activity_timer_selecter">Список Таймеров</string>
     <string name="title_activity_usual_timer">Таймер с Раудами</string>
-    <string name="title_activity_count_down_timer">CountDownTimer</string>
-    <string name="title_activity_down_load_page">DownLoadPage</string>
+    <string name="title_activity_count_down_timer">ТАймер обратного отсчета</string>
+    <string name="title_activity_down_load_page">Окно загрузки</string>
+
+    <string name="choose_date">Выберите дату</string>
+    <string name="ready">Готово</string>
 </resources>

@@ -57,21 +57,17 @@ import ru.startandroid.mybook.db.DbTables.TypeAndTrain;
  * Created by Алексей on 08.11.2015.
  */
  public  class ApiConnector {
-    private  String Url = "https://itdtopteam.reg.ru/";
+    private  String host = "https://itdtopteam.ru/";
     DatabaseHandler db;
-
-    public ApiConnector(DatabaseHandler db) {
+    public ApiConnector (DatabaseHandler db)
+    {
         this.db = db;
     }
-
-    public void getAllTraining(boolean checkCount)
+    public void getAllTraining(boolean checkCount,String doc ,HashMap<String,String> param)
     {
-
-        HashMap<String,String> param = new HashMap<String,String>();
-        param.put("maxId",db.getMaxTypeAndTrainID().toString());
         try {
-
-            URL  fullUrl = new URL("https://itdtopteam.ru/getAllJson.php");
+            host = host+ doc;
+            URL  fullUrl = new URL(host);
             checkCount = false;
             StringBuffer result = new StringBuffer();
             try {
@@ -79,13 +75,16 @@ import ru.startandroid.mybook.db.DbTables.TypeAndTrain;
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
                 urlConnection.setRequestProperty("Connection", "Keep-Alive");
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("POST");
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
                 OutputStream os = urlConnection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(os, "UTF-8"));
-                writer.write(getPostDataString(param));
-
+                String str = getPostDataString(param);
+                writer.write(str);
                 writer.flush();
                 writer.close();
                 os.close();
@@ -110,10 +109,10 @@ import ru.startandroid.mybook.db.DbTables.TypeAndTrain;
                 e.printStackTrace();
                 checkCount = false;
             }
-            if (result.toString()!= "Post's Error") {
+            if(result.toString()!= "Post's Error" && result.toString()!= "Error of access") {
                 JSONArray jArray = ConvertEntityToJsonArray(result);
                 if (jArray != null) {
-                    setTextToTetView(jArray);
+                    //setTextToTetView(jArray);
                     SaveTrainingToDB(jArray, db);
                     checkCount = true;
                 }

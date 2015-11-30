@@ -49,6 +49,11 @@ public class StatictikFragment extends Fragment implements View.OnClickListener{
         trainList = new ArrayList<>();
         adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,trainList);
         listView.setAdapter(adapter);
+
+
+
+
+
         itemText = (TextView)view.findViewById(R.id.itemText);
         Button lkbut = (Button)view.findViewById(R.id.lkBut);
         lkbut.setOnClickListener(this);
@@ -77,21 +82,21 @@ public class StatictikFragment extends Fragment implements View.OnClickListener{
     {
         List<Training> traings = db.getAllTraining();
 
-
-        List<TypeAndTrain> ty = db.getAllTypeAndTrain();
+        /*List<TypeAndTrain> ty = db.getAllTypeAndTrain();
         for( TypeAndTrain tr : ty )
         {
             trainList.add( "id tp_tr: " + tr.get_id_tp_tr() + "id_tp: " + tr.get_id_tp() + " id_tr: " + tr.get_id_tr());
             adapter.notifyDataSetChanged();
-        }
+        }*/
 
-        List<Type> type = db.getAllType();
-        for( Type tr1 : type )
+        List<DiaryItem> diery = db.getAllDiary();
+
+        /*for(DiaryItem tr: diery)
         {
-            Log.d("type","id tp=: "+tr1.get_id_tp() + "name: " +tr1.get_name_tp());
-
-        }
+            db.deleteDiaryItem(tr);
+        }*/
     }
+
 
 
 }

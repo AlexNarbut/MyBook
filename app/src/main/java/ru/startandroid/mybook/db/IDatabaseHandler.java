@@ -1,8 +1,16 @@
-package ru.startandroid.mybook.db.DbTables;
+package ru.startandroid.mybook.db;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import ru.startandroid.mybook.db.DbTables.DiaryItem;
+import ru.startandroid.mybook.db.DbTables.Item;
+import ru.startandroid.mybook.db.DbTables.Training;
+import ru.startandroid.mybook.db.DbTables.Type;
+import ru.startandroid.mybook.db.DbTables.TypeAndTrain;
 
 /**
  * Created by Алексей on 22.10.2015.
@@ -42,4 +50,5 @@ public interface IDatabaseHandler {
 
         public Item SearchClientTraining(String str,String ex);
         public void deleteAll();
+        public List<DiaryItem> SearchDieryList(GregorianCalendar date);
 }

@@ -1,6 +1,7 @@
 package ru.startandroid.mybook.fragment;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.CalendarView;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import ru.startandroid.mybook.CustomTrainingFragment;
 import ru.startandroid.mybook.R;
 
 public class CalendarFragment extends Fragment  {
@@ -50,7 +52,12 @@ public class CalendarFragment extends Fragment  {
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
                 Calendar date1 = new GregorianCalendar(year,month,day);
                 if (date.get(Calendar.DAY_OF_MONTH) != date1.get(Calendar.DAY_OF_MONTH)) {
-                    AlertClick(year, month, day);
+                    //AlertClick(year, month, day);
+                    CustomTrainingFragment fragment = new CustomTrainingFragment();
+                    fragment.year = date1.YEAR;
+                    fragment.month = date1.MONTH;
+                    fragment.day = date1.DAY_OF_MONTH;
+                    fragment.show(getChildFragmentManager(), "customTrain");
                 }
                 date= date1;
             }
@@ -59,6 +66,7 @@ public class CalendarFragment extends Fragment  {
 
     private void AlertClick(int year1,int month1,int day1)
     {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(day1+"."+(month1+1) +"." +year1)
                 .setMessage("Тренировки")

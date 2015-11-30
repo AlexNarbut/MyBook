@@ -50,15 +50,7 @@
                 android:value="ru.startandroid.mybook.MainActivity" />
         </activity>
         <activity
-            android:name=".timers.UsualTimer"
-            android:label="@string/title_activity_usual_timer"
-            android:theme="@style/AppTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.startandroid.mybook.timers.TimerSelecter" />
-        </activity>
-        <activity
-            android:name=".timers.CountDownTimer"
+            android:name=".timers.CountDownTimerFragment"
             android:label="@string/title_activity_count_down_timer"
             android:parentActivityName=".timers.TimerSelecter"
             android:theme="@style/AppTheme" >

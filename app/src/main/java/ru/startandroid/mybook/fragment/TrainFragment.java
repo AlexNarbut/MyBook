@@ -22,24 +22,22 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import ru.startandroid.mybook.MainActivity;
 import ru.startandroid.mybook.R;
 import ru.startandroid.mybook.TrainActivity;
 import ru.startandroid.mybook.db.DatabaseHandler;
 import ru.startandroid.mybook.db.DbTables.DiaryItem;
 import ru.startandroid.mybook.db.DbTables.Item;
 import ru.startandroid.mybook.db.DbTables.Type;
-
-/**
- * Created by Алексей on 07.10.2015.
- */
+import android.support.v4.app.DialogFragment;
 public class TrainFragment  extends Fragment implements View.OnClickListener{
     private static final int LAYOUT = R.layout.fragment_train;
     private Button createTrain;
+    private Button setDate;
     private Spinner typeSpinner;
+    private TextView dateTextView;
     private  Spinner exSpinner;
-    private int year,month,day;
+    private int mYear,mMonth,mDay;
+    static final int DATE_DIALOG_ID = 0;
     final Calendar nowdate = Calendar.getInstance();
     private View view;
     DatabaseHandler db;
@@ -60,16 +58,25 @@ public class TrainFragment  extends Fragment implements View.OnClickListener{
         db = new DatabaseHandler(getContext());
         exSpinner  =(Spinner)view.findViewById(R.id.main_ex_train_spinner);
         createTrain = (Button)view.findViewById(R.id.create_train);
+        setDate = (Button)view.findViewById(R.id.select_date_button);
         typeSpinner  =(Spinner)view.findViewById(R.id.model_train_spinner);
-        year = nowdate.get(Calendar.YEAR);
-        month = nowdate.get(Calendar.MONTH);
-        day = nowdate.get(Calendar.DAY_OF_MONTH);
+        dateTextView =  (TextView)view.findViewById(R.id.train_date_textview);
+        mYear = nowdate.get(Calendar.YEAR);
+        mMonth = nowdate.get(Calendar.MONTH);
+        mDay = nowdate.get(Calendar.DAY_OF_MONTH);
         createTrain.setOnClickListener(this);
+        setDate.setOnClickListener(this);
+        Calendar date = Calendar.getInstance();
+        mYear = date.get(Calendar.YEAR);
+        mMonth = date.get(Calendar.MONTH);
+        mDay = date.get(Calendar.DAY_OF_MONTH);
+        dateTextView.setTextColor(getResources().getColor(R.color.accent));
+        dateTextView.setText(mDay+ "/" + mMonth+ "/" + mYear );
         return view;
     }
 
 
-    private String DetermineType(int type)
+    public static String DetermineType(int type)
     {
         switch (type)
         {
@@ -91,23 +98,23 @@ public class TrainFragment  extends Fragment implements View.OnClickListener{
         {
             case R.id.create_train:
             {
-                AlertClick();
+                alertClick();
+                break;
+            }
+            case R.id.select_date_button:
+            {
+                showDatePicker();
                 break;
             }
         }
 
     }
 
-    private void AlertClick()
+    private void alertClick()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        int type = typeSpinner.getSelectedItemPosition();
-        List<Type> types = db.getAllType();
-        for( Type tr : types )
-        {
-            Log.d("TYPE", tr.get_name_tp());
-        }
-        final Item item =  db.SearchClientTraining(DetermineType(type),exSpinner.getSelectedItem().toString());
+        final int type = typeSpinner.getSelectedItemPosition();
+        final Item item =  db.SearchClientTraining(DetermineType(typeSpinner.getSelectedItemPosition()),exSpinner.getSelectedItem().toString());
         if(item !=null) {
             builder.setTitle("Название:" + item.getTrainName())
                     .setMessage("Упражнения\n" + item.getDescr())
@@ -120,12 +127,14 @@ public class TrainFragment  extends Fragment implements View.OnClickListener{
                     .setNeutralButton("Обновить", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            AlertClick();
+                            alertClick();
                         }
                     })
                     .setCancelable(true).setPositiveButton("Создать", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.cancel();
+                    Date date =  new Date(mYear,mMonth,mDay);
+                    db.addDiary(new DiaryItem(item.getId_tp_tr(),new Date(mYear,mMonth,mDay), 0));
                     Intent intent = new Intent(getActivity(), TrainActivity.class);
                     intent.putExtra("id_tp_tr", item.getId_tp_tr());
                     intent.putExtra("id_tr", item.getId_tr());
@@ -148,7 +157,60 @@ public class TrainFragment  extends Fragment implements View.OnClickListener{
         alert.show();
     }
 
+    private void showDatePicker() {
+        DatePickerFragment date = new DatePickerFragment();
 
+        // set date of today
+        date.setStyle(DialogFragment.STYLE_NORMAL,android.R.style.Theme_Holo_Light_Dialog);
+        Calendar calender = Calendar.getInstance();
+        Bundle args = new Bundle();
+        args.putInt("year", calender.get(Calendar.YEAR));
+        args.putInt("month", calender.get(Calendar.MONTH));
+        args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+        date.setArguments(args);
+        date.setCallBack(ondate);
+        date.show(getChildFragmentManager(), "Date Picker");
+    }
 
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mYear = year;
+            mMonth = monthOfYear;
+            mDay = dayOfMonth;
+            dateTextView.setText(mDay+ "/" + mMonth+ "/" + mYear );
+        }
+    };
+
+/* Класс для DatePicker Fragment*/
+
+    public class DatePickerFragment extends DialogFragment {
+        private static final String TAG = "DatePickerFragment";
+        DatePickerDialog.OnDateSetListener ondateSet;
+
+        public int year;
+        public int month;
+        public int day;
+
+        public DatePickerFragment() {
+        }
+
+        public void setCallBack(DatePickerDialog.OnDateSetListener ondate) {
+            ondateSet = ondate;
+        }
+
+        @Override
+        public void setArguments(Bundle args) {
+            super.setArguments(args);
+            year = args.getInt("year");
+            month = args.getInt("month");
+            day = args.getInt("day");
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new DatePickerDialog(getActivity(), ondateSet, year, month, day);
+        }
+    }
 
 }

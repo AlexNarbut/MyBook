@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
     <style name="AppDefault" parent="AppTheme">
+        <item name="android:dialogTheme">@style/AppTheme.DialogTheme</item>
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <item name="android:colorAccent">@color/accent</item>
@@ -29,6 +30,15 @@
         <item name="android:paddingRight">2dp</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+
+    <style name="AppTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+
     </style>
 
     <!-- Backward-compatible version of ?android:attr/buttonBarButtonStyle -->

@@ -9,7 +9,7 @@ public class DiaryItem {
     int _id_dr;
     int _id_tp_tr;
     Date day;
-    byte state;
+    Integer state;
     /*названия полей таблицы для Sqlite */
     public static final String TABLE_NAME = "diary";
     public static final String ID = "_id_dr";
@@ -25,23 +25,23 @@ public class DiaryItem {
             + ID + " integer primary key autoincrement, "
             + ID_TP_TR + " integer ,  "
             + DAY + " text not null , "
-            + STATE + " text not null, "
+            + STATE + " integer, "
              + " FOREIGN KEY( " + ID_TP_TR + " ) REFERENCES "+
             TypeAndTrain.TABLE_NAME+" ( "+ TypeAndTrain.ID +" ));";
 
-    public DiaryItem(int _id_tp_tr, byte state) {
+    public DiaryItem(int _id_tp_tr, int state) {
         this._id_tp_tr = _id_tp_tr;
         this.day = new Date();
         this.state = state;
     }
 
-    public DiaryItem(int _id_tp_tr, Date day, byte state) {
+    public DiaryItem(int _id_tp_tr, Date day, int state) {
         this._id_tp_tr = _id_tp_tr;
         this.day = day;
         this.state = state;
     }
 
-    public DiaryItem(int _id_dr, int _id_tp_tr, Date day, byte state) {
+    public DiaryItem(int _id_dr, int _id_tp_tr, Date day, int state) {
 
         this._id_dr = _id_dr;
         this._id_tp_tr = _id_tp_tr;
@@ -57,16 +57,12 @@ public class DiaryItem {
         this._id_tp_tr = _id_tp_tr;
     }
 
-    public void setDay() {
-
-        this.day = new Date();
-    }
 
     public void setDay(Date date) {
         this.day = date;
     }
 
-    public void setState(byte state) {
+    public void setState(int state) {
         this.state = state;
     }
 
@@ -83,7 +79,7 @@ public class DiaryItem {
         return day;
     }
 
-    public byte getState() {
+    public int getState() {
         return state;
     }
 

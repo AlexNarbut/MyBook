@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        drawLayout.openDrawer(GravityCompat.START);
     }
 
 /* */
@@ -110,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         TabLayout tablayout = (TabLayout)findViewById(R.id.tablayout);
         tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-       // tablayout.setTabMode(TabLayout.ANIMATION_DURATION);
         tablayout.setupWithViewPager(viewPager);
     }
 
@@ -132,23 +133,4 @@ public class MainActivity extends AppCompatActivity {
     private void showStatistTab(){viewPager.setCurrentItem(Constans.TAB_THREE);
     }
 
-    private void AlertClick()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Составленная тренировка!")
-                .setMessage("Что-то там, что-то там")
-                .setNegativeButton("Закрыть",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }})
-                .setCancelable(true).setPositiveButton("Создать", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                        /* код добавления тренировки*/
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
 }
